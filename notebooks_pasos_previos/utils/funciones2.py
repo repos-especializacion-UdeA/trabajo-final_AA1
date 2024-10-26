@@ -15,7 +15,6 @@ from scipy import signal
 def test_hola():
     print("Hola amigos")
 
-
 ####################################################################################################
 # Funciones sobre las señales
 ####################################################################################################
@@ -116,6 +115,44 @@ def filter_signal(data,
         data_filtered[_col] = signal.filtfilt(b, a, data[_col])
 
     return  data_filtered
+
+
+
+def segmentar_data_base(data_base, 
+                    window_size = None, 
+                    overlap_size = None):
+    
+    ################################################################## 
+    #             Verificacion de prerequisitos basicos              #
+    ##################################################################
+
+    sujeto = data_base.iloc[:,0]
+    emg_data = data_base.iloc[:,1:11]
+    postura_data =  data_base.iloc[:,-1]
+    repeticion_data = data_base.iloc[:,-2] 
+
+
+    #print(emg_data)
+    ventanas = []
+    ventana = pd.DataFrame()
+    step_size = window_size - overlap_size
+    for i in range(0, len(emg_data) - window_size + 1, step_size):
+        sujeto_window = sujeto.iloc[i:i + window_size]
+        label_window = postura_data.iloc[i:i + window_size]
+        rep_window = repeticion_data.iloc[i:i + window_size]
+        num_unique_labels = label_window.nunique()
+        if isinstance(num_unique_labels, int) and num_unique_labels == 1: 
+            # label = label_window.mode.iloc[0,0] # se usa la moda
+            ventana = pd.concat([sujeto_window.iloc[i:i + window_size].copy().reset_index(drop=True), 
+                                 emg_data.iloc[i:i + window_size].copy().reset_index(drop=True), 
+                                 rep_window.copy().reset_index(drop=True),
+                                 label_window.copy().reset_index(drop=True)], 
+                                 axis=1)
+            ventanas.append(ventana)
+            # print(f"Indice inicial de la ventana agregada: {i}")
+        # print(emg_data.iloc[i:i + window_size])
+    print(len(ventanas))
+    return ventanas
 
 
 def segmentar_datos(emg_data, 
