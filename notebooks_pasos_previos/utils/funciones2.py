@@ -161,17 +161,18 @@ def aplanar_ventana(window):
         raise TypeError("La ventana deben ser un dataframe")
     emg_values = window.iloc[:, :-2]
     f,c = emg_values.shape
-    print(f,c)
-    print(emg_values.columns)     
-    print(emg_values.values.T.flatten())
+    # print(f,c)
+    # print(emg_values.columns)     
+    # print(emg_values.values.T.flatten())
     emg_columns=[f"{emg_col}_{i}" for i in range(len(emg_values)) for emg_col in emg_values.columns]
-    print(emg_columns)
+    # print(emg_columns)
     single_row_df = pd.DataFrame([emg_values.values.T.flatten()],columns = emg_columns)
     single_row_df['rep'] = window.loc[0,'rep']
     single_row_df['label'] = window.loc[0,'label']
     # print(window.loc[0,'rep'])
-    print(single_row_df.shape)
-    print(single_row_df)
+    # print(single_row_df.shape)
+    # print(single_row_df)
+    return single_row_df
 
 
 ####################################################################################################
