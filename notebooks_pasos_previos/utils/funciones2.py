@@ -116,6 +116,45 @@ def filter_signal(data,
 
     return  data_filtered
 
+
+def segmentar_datos(emg_data, 
+                    postura_data, 
+                    repeticion_data, 
+                    window_size = None, 
+                    step_size = None):
+    
+    ################################################################## 
+    #             Verificacion de prerequisitos basicos              #
+    ##################################################################
+
+    if not isinstance(emg_data, pd.DataFrame):
+        raise TypeError("Los datos deben ser un dataframe")
+    
+    if isinstance(postura_data, (list, np.ndarray)):
+        postura_data = pd.DataFrame({"label": postura_data})
+    
+    if isinstance(repeticion_data, (list, np.ndarray)):
+        repeticion_data = pd.DataFrame({"rep": repeticion_data})
+
+    #print(emg_data)
+    ventanas = []
+    ventana = pd.DataFrame()
+    for i in range(0, len(emg_data) - window_size + 1, step_size):
+        label_window = postura_data.iloc[i:i + window_size]
+        rep_window = repeticion_data.iloc[i:i + window_size]
+        if label_window.nunique()[0] == 1:
+            # label = label_window.mode.iloc[0,0] # se usa la moda
+            ventana = pd.concat([emg_data.iloc[i:i + window_size].copy().reset_index(drop=True), 
+                                 rep_window.copy().reset_index(drop=True),
+                                 label_window.copy().reset_index(drop=True)], 
+                                 axis=1)
+            ventanas.append(ventana)
+            print(f"Indice inicial de la ventana agregada: {i}")
+        # print(emg_data.iloc[i:i + window_size])
+    print(len(ventanas))
+    return ventanas
+
+
 ####################################################################################################
 # Funciones de graficado
 ####################################################################################################
