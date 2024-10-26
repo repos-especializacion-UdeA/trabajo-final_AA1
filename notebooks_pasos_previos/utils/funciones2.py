@@ -121,7 +121,7 @@ def segmentar_datos(emg_data,
                     postura_data, 
                     repeticion_data, 
                     window_size = None, 
-                    step_size = None):
+                    overlap_size = None):
     
     ################################################################## 
     #             Verificacion de prerequisitos basicos              #
@@ -139,20 +139,39 @@ def segmentar_datos(emg_data,
     #print(emg_data)
     ventanas = []
     ventana = pd.DataFrame()
+    step_size = window_size - overlap_size
     for i in range(0, len(emg_data) - window_size + 1, step_size):
         label_window = postura_data.iloc[i:i + window_size]
         rep_window = repeticion_data.iloc[i:i + window_size]
-        if label_window.nunique()[0] == 1:
+        num_unique_labels = label_window.nunique()
+        if isinstance(num_unique_labels, int) and num_unique_labels == 1: 
             # label = label_window.mode.iloc[0,0] # se usa la moda
             ventana = pd.concat([emg_data.iloc[i:i + window_size].copy().reset_index(drop=True), 
                                  rep_window.copy().reset_index(drop=True),
                                  label_window.copy().reset_index(drop=True)], 
                                  axis=1)
             ventanas.append(ventana)
-            print(f"Indice inicial de la ventana agregada: {i}")
+            # print(f"Indice inicial de la ventana agregada: {i}")
         # print(emg_data.iloc[i:i + window_size])
     print(len(ventanas))
     return ventanas
+
+def aplanar_ventana(window):
+    if not isinstance(window, pd.DataFrame):
+        raise TypeError("La ventana deben ser un dataframe")
+    emg_values = window.iloc[:, :-2]
+    f,c = emg_values.shape
+    print(f,c)
+    print(emg_values.columns)     
+    print(emg_values.values.T.flatten())
+    emg_columns=[f"{emg_col}_{i}" for i in range(len(emg_values)) for emg_col in emg_values.columns]
+    print(emg_columns)
+    single_row_df = pd.DataFrame([emg_values.values.T.flatten()],columns = emg_columns)
+    single_row_df['rep'] = window.loc[0,'rep']
+    single_row_df['label'] = window.loc[0,'label']
+    # print(window.loc[0,'rep'])
+    print(single_row_df.shape)
+    print(single_row_df)
 
 
 ####################################################################################################
