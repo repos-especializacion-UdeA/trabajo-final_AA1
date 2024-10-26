@@ -226,7 +226,7 @@ def aplanar_data_base_obsoleto(database_windows):
 def aplanar_data_base(database_windows):
     filas = []  # Lista para almacenar las filas aplanadas
     for i in range(len(database_windows)):
-        fila_df = aplanar_ventana(database_windows[i])
+        fila_df = aplanar_ventana(database_windows[i].iloc[:,1:])
         filas.append(fila_df)  # Agregar a la lista en lugar de concatenar inmediatamente
     # Concatenar todo al final
     data_base_plana = pd.concat(filas, ignore_index=True)
