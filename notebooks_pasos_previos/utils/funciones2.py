@@ -6,6 +6,10 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+import scipy.io
+from scipy import signal
+
+
 # Funciones de prueba
 
 def test_hola():
