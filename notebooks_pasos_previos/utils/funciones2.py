@@ -126,7 +126,7 @@ def segmentar_data_base(data_base,
     #             Verificacion de prerequisitos basicos              #
     ##################################################################
 
-    sujeto = data_base.iloc[:,0]
+    sujeto_data = data_base.iloc[:,0]
     emg_data = data_base.iloc[:,1:11]
     postura_data =  data_base.iloc[:,-1]
     repeticion_data = data_base.iloc[:,-2] 
@@ -137,13 +137,13 @@ def segmentar_data_base(data_base,
     ventana = pd.DataFrame()
     step_size = window_size - overlap_size
     for i in range(0, len(emg_data) - window_size + 1, step_size):
-        sujeto_window = sujeto.iloc[i:i + window_size]
+        sujeto_window = sujeto_data.iloc[i:i + window_size]
         label_window = postura_data.iloc[i:i + window_size]
         rep_window = repeticion_data.iloc[i:i + window_size]
         num_unique_labels = label_window.nunique()
         if isinstance(num_unique_labels, int) and num_unique_labels == 1: 
             # label = label_window.mode.iloc[0,0] # se usa la moda
-            ventana = pd.concat([sujeto_window.iloc[i:i + window_size].copy().reset_index(drop=True), 
+            ventana = pd.concat([sujeto_window.copy().reset_index(drop=True), 
                                  emg_data.iloc[i:i + window_size].copy().reset_index(drop=True), 
                                  rep_window.copy().reset_index(drop=True),
                                  label_window.copy().reset_index(drop=True)], 
@@ -212,6 +212,25 @@ def aplanar_ventana(window):
     # print(single_row_df)
     return single_row_df
 
+"""
+# Funcion ineficiente
+def aplanar_data_base_obsoleto(database_windows):
+    data_base_plana = pd.DataFrame(columns = database_windows[0].columns)
+    for i in range(len(database_windows)):
+        fila_df = aplanar_ventana(database_windows[i])
+        data_base_plana = pd.concat([data_base_plana, fila_df], ignore_index=True)
+    return data_base_plana
+"""
+
+# Funcion optimizada gracias a CharGPT
+def aplanar_data_base(database_windows):
+    filas = []  # Lista para almacenar las filas aplanadas
+    for i in range(len(database_windows)):
+        fila_df = aplanar_ventana(database_windows[i])
+        filas.append(fila_df)  # Agregar a la lista en lugar de concatenar inmediatamente
+    # Concatenar todo al final
+    data_base_plana = pd.concat(filas, ignore_index=True)
+    return data_base_plana
 
 ####################################################################################################
 # Funciones de graficado
