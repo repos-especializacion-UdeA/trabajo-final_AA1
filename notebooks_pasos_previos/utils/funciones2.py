@@ -228,9 +228,41 @@ def aplanar_data_base(database_windows):
     for i in range(len(database_windows)):
         fila_df = aplanar_ventana(database_windows[i].iloc[:,1:])
         filas.append(fila_df)  # Agregar a la lista en lugar de concatenar inmediatamente
-    # Concatenar todo al final
+    # Concatenar todo al final  
     data_base_plana = pd.concat(filas, ignore_index=True)
     return data_base_plana
+
+def features_data_base(database_windows):
+    filas = []  # Lista para almacenar las filas aplanadas
+    for i in range(len(database_windows)):
+        rms_window = pd.DataFrame({'s': [database_windows[i].iloc[0,0]]})
+        rms_seg = rms_value(database_windows[i].iloc[:,1:-2])
+        rms_window = pd.concat([rms_window,rms_seg],axis=1)
+        rms_window['rep'] = database_windows[i].iloc[0,-2]
+        rms_window['label'] = database_windows[i].iloc[0,-1]
+        filas.append(rms_window)  # Agregar a la lista en lugar de concatenar inmediatamente
+    # Concatenar todo al final  
+    features_data_base = pd.concat(filas, ignore_index=True)
+    return features_data_base
+
+
+####################################################################################################
+# Metricas
+####################################################################################################
+ 
+def rms_value(emg_values):
+    if not isinstance(emg_values, pd.DataFrame):
+        raise TypeError("La ventana deben ser un dataframe")
+    rms_emg_values = emg_values.apply(lambda x: np.sqrt(np.mean(np.square(x))), axis=0)
+    rms_df = pd.DataFrame([rms_emg_values])
+    return rms_df 
+
+def mav_value(emg_values):
+    if not isinstance(emg_values, pd.DataFrame):
+        raise TypeError("La ventana deben ser un dataframe")
+    mav_emg_values = emg_values.apply(lambda x: np.mean(np.abs(x)), axis=0)
+    mav_df = pd.DataFrame([mav_emg_values])
+    return mav_df
 
 ####################################################################################################
 # Funciones de graficado
