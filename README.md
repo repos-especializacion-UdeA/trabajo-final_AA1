@@ -95,9 +95,9 @@ Los modelos empleados para llevar a cabo la clasificación, se muestran a contin
 
 Ver Notebook con la evaluación de los modelos [[link]](./notebooks_pasos_previos/07_evaluacion_entre_modelos_clasificacion.ipynb)
 
-## Conclusiones 
+## Presentaciones
 
-To Do...
+Las presentaciones se encuentran en el siguiente [enlace](./Presentacion%20final.pdf)
 
 ## Referencias
 
