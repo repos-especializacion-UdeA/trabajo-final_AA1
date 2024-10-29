@@ -55,7 +55,9 @@ En las siguientes figuras se muestran las diferentes posturas realizadas:
   
   ![movimientos3](movimientos3.png)
 
+La siguiente figura adaptada del articulo **Effect of Analysis Window and Feature Selection on Classification of Hand Movements Using EMG Signal** [[link]](https://web.lums.edu.pk/~imdad/pdfs/papers/20_08_effect_of_analysis_window.pdf) resume que se pretende realizar en este trabajo:
 
+![resumen](resumen.png)
 
 ## Objetivo a desarrollar
 
@@ -71,13 +73,11 @@ La siguiente figura muestra el procedimiento realizado para llevar a cabo la cla
 
 ### Pasos previos
 
-Esta parte se agrega ya que los datos no son estructurados. El objetivo final es llevar estos a una representación que los haga mas adecuados para poderlos meter en el modelo de aprendizaje. Los siguientes notebooks se relacionan con este procedimiento:
-1. [[link]](./notebooks_pasos_previos/00_preprocesamiento_dataset_clasificacion.ipynb)
+Esta parte se agrega ya que los datos no son estructurados. El objetivo final es llevar estos a una representación que los haga mas adecuados para poderlos meter en el modelo de aprendizaje. El notebook con la preprosamiento de los datos se muestra en el siguiente [[link]](./notebooks_pasos_previos/00_preprocesamiento_dataset_clasificacion.ipynb)
 
 ### Preparación de datos
 
-
-
+El siguiente [[link]](./notebooks_pasos_previos/01_preparacion_dataset_clasificacion.ipynb) contiene el proceso llevado a cabo para la preparación de los datos.
 
 ### Creación de modelos
 
@@ -87,7 +87,6 @@ Los modelos empleados para llevar a cabo la clasificación, se muestran a contin
 3. Modelo de arboles de decisión [[link]](./notebooks_pasos_previos/04_arboles_decision_clasificacion.ipynb)
 4. Modelo de arboles de decisión usando Random Forest [[link]](./notebooks_pasos_previos/05_arboles_decision_random_forest_clasificacion.ipynb)
 5. Modelo Ada-Boost [[link]](./notebooks_pasos_previos/06_ada_boost_clasificacion.ipynb)
-
 
 
 ## Evaluación de los modelos
