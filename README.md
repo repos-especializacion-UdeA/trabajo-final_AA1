@@ -59,6 +59,8 @@ La siguiente figura adaptada del articulo **Effect of Analysis Window and Featur
 
 ![resumen](resumen.png)
 
+Es importante anotar, que nuestro trabajo solo se limita a los movimientos del realizados en el ejercicio 1 y solo tentra en cuenta las muestras capturadas por los electrodos de superficie. Esto se abordara con mas detalle en los notebooks.
+
 ## Objetivo a desarrollar
 
 Aplicar diferentes modelos de aprendizaje para un subconjunto de datos de la base de datos ninapro BD1 ([link](https://ninapro.hevs.ch/instructions/DB1.html)) y comparar su rendimiento. 
